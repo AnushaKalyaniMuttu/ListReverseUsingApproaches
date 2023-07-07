@@ -1,0 +1,52 @@
+package com.employee;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+public class Parent {
+
+	 public static void main(String [] args) {
+		 List<Integer> list=new ArrayList<>();
+		 list.add(1);
+		 list.add(3);
+		 list.add(2);
+		 List<Integer> reversedList = new ArrayList<>(list);
+		 //Using Collections.reverse();
+		 Collections.reverse(reversedList);
+		 System.out.println(list);
+		 System.out.println(reversedList);
+		 
+		 //Using ListIterator(SIZE SHOULD BE MENTIONED FOR LISTITERATOR)
+		 ListIterator<Integer> listIterator=list.listIterator(list.size());
+		 List<Integer> reversedListUsingListIterator = new ArrayList<>();
+
+		 while(listIterator.hasPrevious()) {
+			 reversedListUsingListIterator.add(listIterator.previous());
+		 }
+		 System.out.println(reversedListUsingListIterator+" :Using List Iterator");
+		 
+		 //UsingCollectingAndThen
+		 List<Integer> reversedListUsingCollectingAndThen = list.stream()
+	             .collect(Collectors.collectingAndThen(
+	                 Collectors.toList(), lst -> {
+	                     Collections.reverse(lst);
+	                     return lst;
+	                 }));
+		 System.out.println(reversedListUsingCollectingAndThen);
+	
+		 //Using IntStream
+		 int number = 12345;					//1234     //123
+		 int reversedNumber = IntStream.iterate(number, n -> n / 10)
+		         .limit(String.valueOf(number).length())
+		         .map(n -> n % 10)//5   //4  //3 //2 //1
+		         .reduce(0, (fin, middle) -> fin * 10 + middle);//50+4=54; 540+3 =543 //5430+2 //54321
+		 System.out.println(reversedNumber);
+	 }
+	 
+	 
+	 
+}
